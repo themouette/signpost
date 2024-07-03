@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+# Install the aplication and its dependencies
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+SCRIPT=install
+INFO="
+Install dependencies for the project
+"
+
+function usage
+{
+   echo
+   echo $INFO
+   echo
+   echo -e " \033[4mUsage:\033[0m $SCRIPT"
+   echo
+   echo "          Options :"
+   echo "              -h           display this help"
+   echo
+   echo -e " \033[4mExemples:\033[0m "
+   echo -e "       $SCRIPT"
+   echo
+
+   exit 255
+}
+
+
+# Read parameters
+while getopts "h" options; do
+   case $options in
+    h|?) usage
+         ;;
+      *) usage
+         ;;
+  esac
+done
+# remove read arguments
+shift $(( OPTIND - 1 ))
+
+################################################################################
+# command_exists description
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function command_exists {
+  command -v "$1" >/dev/null 2>&1 || {
+    echo "Command $1 not found. Please install it before running this script."
+    exit 1
+  }
+}
+
+################################################################################
+# Check dependencies for this program to run
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function check_dependencies {
+  command_exists npm
+}
+
+################################################################################
+# Install required dependencies for the project
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function install_dependencies {
+  npm install
+}
+
+################################################################################
+# Program main function
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function main {
+  check_dependencies
+  install_dependencies
+}
+
+main "$@"

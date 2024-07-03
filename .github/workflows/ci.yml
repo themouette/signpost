@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build
+    # Allow access to the github-pages secrets
+    environment: github-pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: ./bin/install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Build project
+        env:
+          VITE_GEOAPIFY_API_KEY: "${{ secrets.VITE_GEOAPIFY_API_KEY }}"
+        # deploy to https://themouette.github.io/signpost/
+        run: npm run build -- --base=/signpost/
+
+      - name: Upload Artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
