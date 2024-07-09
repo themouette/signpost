@@ -7,18 +7,21 @@ export interface DestinationWheelProps {
   className?: string;
   postLocation: Address;
   destinations: Address[];
+  width: number;
+  height: number;
 }
 
 export const DestinationWheel: React.FunctionComponent<
   DestinationWheelProps
-> = ({ postLocation, destinations }) => {
+> = ({ postLocation, destinations, width, height }) => {
   return (
     <div>
       <svg
-        width="400"
-        height="400"
+        width={width}
+        height={height}
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 300 300"
       >
         <defs>
           <marker

@@ -9,6 +9,7 @@ import { Address } from "@/lib/address";
 
 function App() {
   const [position, setPosition] = useState<Address>();
+  const [destinations, setDestinations] = useState<Address[]>([]);
 
   return (
     <GeoapifyContext apiKey={GEOAPIFY_API_KEY}>
@@ -18,8 +19,13 @@ function App() {
           className="flex flex-col justify-stretch gap-4"
         />
       ) : (
-        <div className="flex justify-stretch gap-4">
-          <SelectDestinations postLocation={position} />
+        <div className="flex items-stretch justify-items-stretch gap-4">
+          <SelectDestinations
+            postLocation={position}
+            setPostLocation={setPosition}
+            destinations={destinations}
+            setDestinations={setDestinations}
+          />
         </div>
       )}
     </GeoapifyContext>
