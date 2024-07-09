@@ -21,7 +21,7 @@ export const DestinationWheel: React.FunctionComponent<
         height={height}
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 300 300"
+        viewBox="0 0 400 400"
       >
         <defs>
           <marker
@@ -37,7 +37,7 @@ export const DestinationWheel: React.FunctionComponent<
           <line id="stick" y1="-97.5" />
         </defs>
 
-        <g transform="translate(150,152.5)">
+        <g transform="translate(200,200)">
           <image
             href={roseDesVents}
             x="-100"

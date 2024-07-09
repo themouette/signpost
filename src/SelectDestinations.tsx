@@ -1,10 +1,11 @@
-import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { formatNumber } from "./lib/format-number";
 import { distanceInKm } from "./lib/distance";
 import { direction } from "./lib/direction";
@@ -23,7 +24,6 @@ export interface SelectDestinationsProps {
 export const SelectDestinations: React.FunctionComponent<
   SelectDestinationsProps
 > = ({ postLocation, setPostLocation, destinations, setDestinations }) => {
-  const [tab, setTab] = useState<"map" | "wheel">("map");
   const vw = Math.max(
     document.documentElement.clientWidth || 0,
     window.innerWidth || 0
@@ -35,7 +35,7 @@ export const SelectDestinations: React.FunctionComponent<
 
   return (
     <div className="grow flex justify-items-stretch items-stretch gap-0">
-      <div className="w-1/3 p-2">
+      <div className="w-1/3 p-2 border-r">
         <Accordion type="single" collapsible defaultValue="destinations">
           <AccordionItem value="post-position">
             <AccordionTrigger>Position du panneau</AccordionTrigger>
@@ -58,25 +58,28 @@ export const SelectDestinations: React.FunctionComponent<
         </Accordion>
       </div>
       <div className="w-2/3">
-        <div className="mx-2 py-4 flex gap-4">
-          <button onClick={() => setTab("map")}>Carte</button>
-          <button onClick={() => setTab("wheel")}>Rose des vents</button>
-        </div>
-        {tab === "map" ? (
-          <DestinationMap
-            width={(2 / 3) * vw}
-            height={0.85 * vh}
-            postLocation={postLocation}
-            destinations={destinations}
-          />
-        ) : (
-          <DestinationWheel
-            width={(2 / 3) * vw}
-            height={0.85 * vh}
-            postLocation={postLocation}
-            destinations={destinations}
-          />
-        )}
+        <Tabs defaultValue="map">
+          <TabsList className="grid max-w-96 mx-auto my-4 grid-cols-2">
+            <TabsTrigger value="map">Carte</TabsTrigger>
+            <TabsTrigger value="wheel">Rose des vents</TabsTrigger>
+          </TabsList>
+          <TabsContent value="map">
+            <DestinationMap
+              width={(2 / 3) * vw}
+              height={0.85 * vh}
+              postLocation={postLocation}
+              destinations={destinations}
+            />
+          </TabsContent>
+          <TabsContent value="wheel">
+            <DestinationWheel
+              width={(2 / 3) * vw}
+              height={0.85 * vh}
+              postLocation={postLocation}
+              destinations={destinations}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

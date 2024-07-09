@@ -14,10 +14,7 @@ function App() {
   return (
     <GeoapifyContext apiKey={GEOAPIFY_API_KEY}>
       {!position ? (
-        <SelectPostLocation
-          onLocationSelected={setPosition}
-          className="flex flex-col justify-stretch gap-4"
-        />
+        <SelectPostLocation onLocationSelected={setPosition} />
       ) : (
         <div className="flex items-stretch justify-items-stretch gap-4">
           <SelectDestinations

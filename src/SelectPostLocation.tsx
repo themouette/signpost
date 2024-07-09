@@ -11,8 +11,13 @@ export const SelectPostLocation: React.FunctionComponent<
   SelectPostLocationProps
 > = ({ className, onLocationSelected }) => {
   return (
-    <div className={cn("flex", className)}>
-      <div className="text-2xl">Où sera placé le totem?</div>
+    <div
+      className={cn("flex flex-col justify-stretch gap-4 container", className)}
+    >
+      <p className="text-center text-2xl">
+        Vous souhaitez créer un totem avec des destinations ? Commencez par
+        choisir l'emplacement du totem.
+      </p>
       <div className="relative">
         <AddressAutoComplete onAddressChange={onLocationSelected} />
       </div>
