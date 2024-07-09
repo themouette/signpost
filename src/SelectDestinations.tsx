@@ -105,9 +105,14 @@ const DestinationSelector: React.FunctionComponent<
         onAddressChange={(location) =>
           setDestinations((prev) => prev.concat(location))
         }
+        className="border"
       />
-      {!destinations.length && <div>Ajoutez votre première destination</div>}
-      <div className="border-y mt-2">
+      {!destinations.length && (
+        <div className="text-center p-4 text-lg">
+          Ajoutez votre première destination
+        </div>
+      )}
+      <div className={cn("mt-2", destinations.length && "border-y")}>
         {destinations.map((destination, index) => (
           <ListItem
             key={index}

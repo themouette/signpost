@@ -1,6 +1,7 @@
 import { GeoapifyGeocoderAutocomplete } from "@geoapify/react-geocoder-autocomplete";
 import { useState } from "react";
 import { Address } from "@/lib/address";
+import { cn } from "@/lib/utils";
 
 export interface AddressAutoCompleteProps {
   /** Add an extra className to Geocoder wrapper */
@@ -15,7 +16,7 @@ export const AddressAutoComplete: React.FunctionComponent<
   const [address, setAddress] = useState("");
 
   return (
-    <div className={props.className}>
+    <div className={cn("bg-white [&_input]:border-0", props.className)}>
       <GeoapifyGeocoderAutocomplete
         placeholder="Enter address here"
         value={address}
