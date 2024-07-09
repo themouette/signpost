@@ -1,4 +1,10 @@
 import { useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { formatNumber } from "./lib/format-number";
 import { distanceInKm } from "./lib/distance";
 import { direction } from "./lib/direction";
@@ -30,16 +36,26 @@ export const SelectDestinations: React.FunctionComponent<
   return (
     <div className="grow flex justify-items-stretch items-stretch gap-0">
       <div className="w-1/3 p-2">
-        <div>
-          <h2>Position du panneau</h2>
-          <p>{postLocation?.name}</p>
-          <button onClick={() => setPostLocation(undefined)}>X</button>
-        </div>
-        <DestinationSelector
-          postLocation={postLocation}
-          destinations={destinations}
-          setDestinations={setDestinations}
-        />
+        <Accordion type="single" collapsible defaultValue="destinations">
+          <AccordionItem value="post-position">
+            <AccordionTrigger>Position du panneau</AccordionTrigger>
+            <AccordionContent>
+              <p>{postLocation?.name}</p>
+              <button onClick={() => setPostLocation(undefined)}>X</button>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="destinations">
+            <AccordionTrigger>Destinations</AccordionTrigger>
+            <AccordionContent>
+              <DestinationSelector
+                postLocation={postLocation}
+                destinations={destinations}
+                setDestinations={setDestinations}
+                className="min-h-[80vh]"
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
       <div className="w-2/3">
         <div className="mx-2 py-4 flex gap-4">
@@ -67,6 +83,7 @@ export const SelectDestinations: React.FunctionComponent<
 };
 
 interface DestinationSelectorProps {
+  className?: string;
   postLocation: Address;
   destinations: Address[];
   setDestinations: React.Dispatch<React.SetStateAction<Address[]>>;
@@ -74,9 +91,15 @@ interface DestinationSelectorProps {
 
 const DestinationSelector: React.FunctionComponent<
   DestinationSelectorProps
-> = ({ postLocation, destinations, setDestinations }) => {
+> = ({ className, postLocation, destinations, setDestinations }) => {
   return (
-    <div>
+    <div className={className}>
+      <AddressAutoComplete
+        onAddressChange={(location) =>
+          setDestinations((prev) => prev.concat(location))
+        }
+      />
+      {!destinations.length && <div>Ajoutez votre première destination</div>}
       <div>
         {destinations.map((destination, index) => (
           <div
@@ -102,11 +125,6 @@ const DestinationSelector: React.FunctionComponent<
           </div>
         ))}
       </div>
-      <AddressAutoComplete
-        onAddressChange={(location) =>
-          setDestinations((prev) => prev.concat(location))
-        }
-      />
     </div>
   );
 };
