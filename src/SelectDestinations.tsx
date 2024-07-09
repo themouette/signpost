@@ -13,6 +13,8 @@ import { AddressAutoComplete } from "./components/geo/AddressAutoComplete";
 import { DestinationMap } from "./DestinationMap";
 import { DestinationWheel } from "./DestinationWheel";
 import { Address } from "./lib/address";
+import { ListItem } from "./components/ListItem";
+import { cn } from "./lib/utils";
 
 export interface SelectDestinationsProps {
   postLocation: Address;
@@ -35,13 +37,15 @@ export const SelectDestinations: React.FunctionComponent<
 
   return (
     <div className="grow flex justify-items-stretch items-stretch gap-0">
-      <div className="w-1/3 p-2 border-r">
+      <div className="w-1/3 border-r">
         <Accordion type="single" collapsible defaultValue="destinations">
           <AccordionItem value="post-position">
             <AccordionTrigger>Position du panneau</AccordionTrigger>
             <AccordionContent>
-              <p>{postLocation?.name}</p>
-              <button onClick={() => setPostLocation(undefined)}>X</button>
+              <ListItem
+                content={<p>{postLocation?.name}</p>}
+                onDelete={() => setPostLocation(undefined)}
+              />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="destinations">
@@ -103,29 +107,28 @@ const DestinationSelector: React.FunctionComponent<
         }
       />
       {!destinations.length && <div>Ajoutez votre première destination</div>}
-      <div>
+      <div className="border-y mt-2">
         {destinations.map((destination, index) => (
-          <div
+          <ListItem
             key={index}
-            className="flex gap-4 justify-stretch items-start text-left"
-          >
-            <div className="text-md grow">
-              <p>{destination.name}</p>
-              <p>
-                {formatNumber(distanceInKm(postLocation, destination))}
-                km {formatNumber(direction(postLocation, destination))}º{" "}
-              </p>
-            </div>
-            <div className="self-center">
-              <button
-                onClick={() => {
-                  setDestinations((prev) => prev.filter((_, i) => i !== index));
-                }}
-              >
-                X
-              </button>
-            </div>
-          </div>
+            className={cn(index !== 0 ? "border-t" : "")}
+            content={
+              <div className="flex gap-4 justify-stretch items-start text-left px-1">
+                <div className="text-md grow">
+                  <p>{destination.name}</p>
+                  <p>
+                    {formatNumber(distanceInKm(postLocation, destination))}
+                    km {formatNumber(
+                      direction(postLocation, destination)
+                    )}º{" "}
+                  </p>
+                </div>
+              </div>
+            }
+            onDelete={() => {
+              setDestinations((prev) => prev.filter((_, i) => i !== index));
+            }}
+          />
         ))}
       </div>
     </div>
