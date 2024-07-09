@@ -1,4 +1,4 @@
-import MapLibre, { Marker } from "react-map-gl/maplibre";
+import MapLibre, { Marker, NavigationControl } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { GEOAPIFY_API_KEY } from "./configuration";
 import { Address } from "@/lib/address";
@@ -29,6 +29,7 @@ export const DestinationMap: React.FunctionComponent<DestinationMapProps> = ({
         }}
         mapStyle={`https://maps.geoapify.com/v1/styles/osm-carto/style.json?apiKey=${GEOAPIFY_API_KEY}`}
       >
+        <NavigationControl />
         <Marker
           longitude={postLocation.longitude}
           latitude={postLocation.latitude}
