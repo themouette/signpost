@@ -15,6 +15,7 @@ import { DestinationWheel } from "./DestinationWheel";
 import { Address } from "./lib/address";
 import { ListItem } from "./components/ListItem";
 import { cn } from "./lib/utils";
+import { DestinationGlobe } from "./DestinationGlobe";
 
 export interface SelectDestinationsProps {
   postLocation: Address;
@@ -63,12 +64,21 @@ export const SelectDestinations: React.FunctionComponent<
       </div>
       <div className="w-2/3">
         <Tabs defaultValue="map">
-          <TabsList className="grid max-w-96 mx-auto my-4 grid-cols-2">
+          <TabsList className="grid max-w-96 mx-auto my-4 grid-cols-3">
             <TabsTrigger value="map">Carte</TabsTrigger>
+            <TabsTrigger value="globe">Globe</TabsTrigger>
             <TabsTrigger value="wheel">Rose des vents</TabsTrigger>
           </TabsList>
           <TabsContent value="map">
             <DestinationMap
+              width={(2 / 3) * vw}
+              height={0.85 * vh}
+              postLocation={postLocation}
+              destinations={destinations}
+            />
+          </TabsContent>
+          <TabsContent value="globe">
+            <DestinationGlobe
               width={(2 / 3) * vw}
               height={0.85 * vh}
               postLocation={postLocation}
