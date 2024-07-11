@@ -20,7 +20,6 @@ export const AddressAutoComplete: React.FunctionComponent<
       <GeoapifyGeocoderAutocomplete
         placeholder="Enter address here"
         value={address}
-        type="city"
         lang="fr"
         onUserInput={(value) => setAddress(value)}
         placeSelect={(result) => {
